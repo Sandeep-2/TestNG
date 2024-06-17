@@ -12,7 +12,7 @@ public class Attendee {
     public Attendee(int id, String name, String email) {
         if (!isValidEmail(email))
             throw new IllegalArgumentException("Invalid email format: " + email);
-        else if (name == null || name == "")
+        else if (name == null || name.trim().isEmpty())
             throw new IllegalArgumentException("Name is should not be null");
         this.id = id;
         this.name = name;
