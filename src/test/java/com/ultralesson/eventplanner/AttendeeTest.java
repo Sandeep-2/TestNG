@@ -38,10 +38,13 @@ public class AttendeeTest {
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
         eventPlanner.addEvent(event);
 
-        Attendee attendee = new Attendee(3, "Alice Brown", "alice.brown@example.com");
-        event.addAttendee(attendee);
+        Attendee newAttendee = new Attendee(3, "Alice Brown", "alice.brown@example.com");
+        int initialSize = event.getAttendees().size();
+        event.addAttendee(newAttendee);
 
-        Assert.assertTrue(event.getAttendees().contains(attendee), "Attendee should have been added to the event");
+        Assert.assertTrue(event.getAttendees().contains(newAttendee), "Attendee should be added to the event");
+        Assert.assertEquals(event.getAttendees().size(), initialSize + 1, "Attendee count should increase by 1");
+        Assert.assertEquals(newAttendee.getName(), "Alice Brown", "Attendee's name should be 'Alice Brown'");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -84,7 +87,7 @@ public class AttendeeTest {
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void shouldNotAllowAddingAttendeeToNonexistentEvent() {
         EventPlanner eventPlanner = new EventPlanner();
-        Event nonExistentEvent = new Event(99, "Ghost Event", "This is a phantom event", new Venue(10, "Ghost Venue", "Nowhere", 0));
+        Event nonExistentEvent = new Event(99, "Ghost Event", "This is a phantom event", new Venue(10, null, "Nowhere", 0));
         Attendee attendee = new Attendee(4, "Alice Wonder", "alice.wonder@example.com");
         // This method should ideally check if the event exists in the event planner before adding an attendee.
         nonExistentEvent.addAttendee(attendee);
