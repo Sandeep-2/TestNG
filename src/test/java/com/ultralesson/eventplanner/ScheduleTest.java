@@ -10,6 +10,9 @@ import org.testng.annotations.Test;
 
 import java.time.LocalDateTime;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+
 public class ScheduleTest {
 
     private EventPlanner eventPlanner;
@@ -24,22 +27,23 @@ public class ScheduleTest {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
         eventPlanner.addEvent(event);
-        LocalDateTime startTime = LocalDateTime.now().plusDays(1);
+        LocalDateTime startTime = LocalDateTime.now().plusDays(10);
         LocalDateTime endTime = startTime.plusHours(2);
 
         eventPlanner.scheduleEvent(event, venue, startTime, endTime);
         Schedule createdSchedule = eventPlanner.getSchedules().get(0);
 
-        Assert.assertNotNull(createdSchedule, "Schedule should not be null");
-        Assert.assertEquals(createdSchedule.getEvent(), event, "Scheduled event should match the input event");
-        Assert.assertEquals(createdSchedule.getVenue(), venue, "Scheduled venue should match the input venue");
-        Assert.assertEquals(createdSchedule.getStartTime(), startTime, "Start time should match the input start time");
-        Assert.assertEquals(createdSchedule.getEndTime(), endTime, "End time should match the input end time");
-        Assert.assertEquals(createdSchedule.getStartTime().toLocalDate(), startTime.toLocalDate(), "Start date should match the input start date");
-        Assert.assertEquals(createdSchedule.getEndTime().toLocalDate(), endTime.toLocalDate(), "End date should match the input end date");
+        assertNotNull(createdSchedule, "The schedule should be created.");
+        assertEquals(createdSchedule.getStartTime(), startTime, "The schedule should have the correct start time.");
+        assertEquals(createdSchedule.getEvent(), event, "Scheduled event should match the input event");
+        assertEquals(createdSchedule.getVenue(), venue, "Scheduled venue should match the input venue");
+        assertEquals(createdSchedule.getStartTime(), startTime, "Start time should match the input start time");
+        assertEquals(createdSchedule.getEndTime(), endTime, "End time should match the input end time");
+        assertEquals(createdSchedule.getStartTime().toLocalDate(), startTime.toLocalDate(), "Start date should match the input start date");
+        assertEquals(createdSchedule.getEndTime().toLocalDate(), endTime.toLocalDate(), "End date should match the input end date");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Start date cannot be past dated")
     public void testCreateScheduleWithPastDates() {
         Venue venue = new Venue(2, "Hotel Ballroom", "Washington DC", 200);
         Event event = new Event(2, "Wedding Reception", "A lovely wedding reception", venue);
