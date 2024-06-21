@@ -87,12 +87,10 @@ public class EventPlanner {
     }
 
     public boolean checkIsOverlapping(LocalDateTime startTime,LocalDateTime endTime){
-        boolean isOverlapping = true;
+        boolean isOverlapping = false;
         for (Schedule schedule : schedules) {
-            if (startTime.isAfter(schedule.getEndTime()))
-                isOverlapping = false;
-            else if (schedule.getStartTime().isAfter(endTime))
-                isOverlapping = false;
+            if (schedule.getEndTime().isAfter(startTime)||endTime.isAfter(schedule.getStartTime()))
+                isOverlapping = true;
         }
         return isOverlapping;
     }

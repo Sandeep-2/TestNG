@@ -19,7 +19,7 @@ public class ScheduleTest {
         eventPlanner = new EventPlanner();
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void testCreateScheduleWithValidDetails() {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
