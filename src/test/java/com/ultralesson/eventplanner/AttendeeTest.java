@@ -72,4 +72,21 @@ public class AttendeeTest {
         event.removeAttendee(attendee);
         Assert.assertFalse(event.getAttendees().contains(attendee), "Attendee should have been removed from the event");
     }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotAllowAddingAttendeeWithNullName() {
+        Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
+        Event event = new Event(2, "Tech Conference", "A comprehensive tech event", venue);
+        Attendee attendee = new Attendee(3, null, "nullname@example.com");
+        event.addAttendee(attendee);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void shouldNotAllowAddingAttendeeToNonexistentEvent() {
+        EventPlanner eventPlanner = new EventPlanner();
+        Event nonExistentEvent = new Event(99, "Ghost Event", "This is a phantom event", new Venue(10, "Ghost Venue", "Nowhere", 0));
+        Attendee attendee = new Attendee(4, "Alice Wonder", "alice.wonder@example.com");
+        // This method should ideally check if the event exists in the event planner before adding an attendee.
+        nonExistentEvent.addAttendee(attendee);
+    }
 }
