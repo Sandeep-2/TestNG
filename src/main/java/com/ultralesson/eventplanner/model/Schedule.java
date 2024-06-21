@@ -11,6 +11,10 @@ public class Schedule {
     private LocalDateTime endTime;
 
     public Schedule(int id, Event event, Venue venue, LocalDateTime startTime, LocalDateTime endTime) {
+        if (venue == null)
+            throw new IllegalArgumentException("Venue is should not be null");
+        else if (event == null)
+            throw new IllegalArgumentException("Event is should not be null");
         this.id = id;
         this.event = event;
         this.venue = venue;

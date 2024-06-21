@@ -6,6 +6,7 @@ import com.ultralesson.eventplanner.model.Schedule;
 import com.ultralesson.eventplanner.model.Venue;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,13 @@ public class EventPlanner {
     }
 
     public void scheduleEvent(Event event, Venue venue, LocalDateTime startTime, LocalDateTime endTime) {
+        if (checkDateIsPast(startTime))
+            throw new IllegalArgumentException("Start date cannot be past dated");
+        if (checkDateIsPast(endTime))
+            throw new IllegalArgumentException("End date cannot be past dated");
+        if(checkIsOverlapping(startTime,endTime))
+            throw new IllegalArgumentException("Schedule time cannot be overlapped");
+
         int scheduleId = schedules.size() + 1;
         Schedule schedule = new Schedule(scheduleId, event, venue, startTime, endTime);
         schedules.add(schedule);
@@ -72,6 +80,21 @@ public class EventPlanner {
 
     public List<Schedule> getSchedules() {
         return schedules;
+    }
+
+    public boolean checkDateIsPast(LocalDateTime date) {
+       return LocalDateTime.now().toLocalDate().isAfter(date.toLocalDate());
+    }
+
+    public boolean checkIsOverlapping(LocalDateTime startTime,LocalDateTime endTime){
+        boolean isOverlapping = true;
+        for (Schedule schedule : schedules) {
+            if (startTime.isAfter(schedule.getEndTime()))
+                isOverlapping = false;
+            else if (schedule.getStartTime().isAfter(endTime))
+                isOverlapping = false;
+        }
+        return isOverlapping;
     }
 }
 
