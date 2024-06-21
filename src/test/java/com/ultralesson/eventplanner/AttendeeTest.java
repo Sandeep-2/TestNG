@@ -52,7 +52,7 @@ public class AttendeeTest {
     @Test(expectedExceptions = Exception.class)
     public void testAddAttendeeToNonExistentEvent() {
         EventPlanner eventPlanner = new EventPlanner();
-        Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
+        Venue venue = new Venue(1, "Conference Center", null, 500);
         Event fakeEvent = new Event(99, "Non-Existent Event", "This event does not exist", venue);
 
         Attendee attendee = new Attendee(5, "Charlie Green", "charlie.green@example.com");
