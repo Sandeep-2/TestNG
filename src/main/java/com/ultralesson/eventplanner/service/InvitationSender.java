@@ -26,7 +26,10 @@ public class InvitationSender {
                 continue;
             }
 
-            System.out.println("Sending invitation to " + email);
+            System.out.println("Sending invitation to " + email+" Dear " + attendee.getName() + ",\n" +
+                    "You are invited to the event: " + event.getName() + "\n" +
+                    "Description: " + event.getDescription() + "\n" +
+                    "Venue: " + event.getVenue().getName() + "\n");
             // Send the actual invitation (e.g., by calling an email service)
         }
     }
