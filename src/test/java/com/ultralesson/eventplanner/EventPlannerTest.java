@@ -7,6 +7,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+
 public class EventPlannerTest {
 
     private EventPlanner eventPlanner;
@@ -24,9 +27,9 @@ public class EventPlannerTest {
         eventPlanner.addEvent(event);
 
         Event retrievedEvent = eventPlanner.getEvents().get(0);
-        Assert.assertEquals(retrievedEvent.getName(), "Tech Conference", "Event name should match");
-        Assert.assertEquals(retrievedEvent.getDescription(), "A conference about technology", "Event description should match");
-        Assert.assertEquals(retrievedEvent.getVenue(), venue, "Event venue should match");
+        assertEquals(retrievedEvent.getName(), "Tech Conference", "Event name should match");
+        assertEquals(retrievedEvent.getDescription(), "A conference about technology", "Event description should match");
+        assertEquals(retrievedEvent.getVenue(), venue, "Event venue should match");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -83,7 +86,7 @@ public class EventPlannerTest {
 
         // Assert
         Event retrievedEvent = eventPlanner.getEvents().get(0);
-        Assert.assertEquals(retrievedEvent.getVenue(), venue, "Assigned venue should match the event’s venue");
+        assertEquals(retrievedEvent.getVenue(), venue, "Assigned venue should match the event’s venue");
     }
 
     @Test
@@ -107,7 +110,7 @@ public class EventPlannerTest {
                 .filter(v -> v.getId() == updatedVenue.getId())
                 .findFirst()
                 .orElse(null);
-        Assert.assertEquals(retrievedVenue, updatedVenue, "Venue should be updated");
+        assertEquals(retrievedVenue, updatedVenue, "Venue should be updated");
 
         // Act: Remove the venue
         eventPlanner.removeVenue(updatedVenue);
@@ -124,5 +127,13 @@ public class EventPlannerTest {
 
         // This should throw an exception since the venue does not exist in the event planner's venue list
         eventPlanner.assignVenueToEvent(nonExistentVenue, event);
+        Event updatedEvent = eventPlanner.getEvents().stream()
+                .filter(e -> e.getId() == event.getId())
+                .findFirst()
+                .orElse(null);
+
+        // Assert
+        assertNotNull(updatedEvent, "Event should not be null");
+        assertEquals(updatedEvent.getVenue(), nonExistentVenue, "The venue should be assigned to the event correctly");
     }
 }
