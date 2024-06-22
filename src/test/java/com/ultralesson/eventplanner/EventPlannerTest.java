@@ -69,4 +69,60 @@ public class EventPlannerTest {
 
         eventPlanner.addEvent(event);
     }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testAssignVenueToEvent() {
+        // Arrange
+        EventPlanner eventPlanner = new EventPlanner();
+        Venue venue = new Venue(1, "Test Venue", "Test Address", 100);
+        Event event = new Event(1, "Test Event", "Event Description", null); // Initially, no venue assigned
+
+        // Act
+        event.setVenue(venue);
+        eventPlanner.addEvent(event);
+
+        // Assert
+        Event retrievedEvent = eventPlanner.getEvents().get(0);
+        Assert.assertEquals(retrievedEvent.getVenue(), venue, "Assigned venue should match the event’s venue");
+    }
+
+    @Test
+    public void testAddUpdateRemoveVenue() {
+        // Arrange
+        EventPlanner eventPlanner = new EventPlanner();
+        Venue venue = new Venue(2, "Another Venue", "Another Address", 200);
+
+        // Act: Add the venue
+        eventPlanner.addVenue(venue);
+
+        // Assert: Check addition
+        Assert.assertTrue(eventPlanner.getVenues().contains(venue), "Venue should be added to the list");
+
+        // Act: Update the venue
+        Venue updatedVenue = new Venue(2, "Updated Venue", "Updated Address", 250);
+        eventPlanner.updateVenue(updatedVenue,venue);
+
+        // Assert: Check update
+        Venue retrievedVenue = eventPlanner.getVenues().stream()
+                .filter(v -> v.getId() == updatedVenue.getId())
+                .findFirst()
+                .orElse(null);
+        Assert.assertEquals(retrievedVenue, updatedVenue, "Venue should be updated");
+
+        // Act: Remove the venue
+        eventPlanner.removeVenue(updatedVenue);
+
+        // Assert: Check removal
+        Assert.assertFalse(eventPlanner.getVenues().contains(updatedVenue), "Venue should be removed from the list");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testAssignNonExistentVenueToEvent() {
+        EventPlanner eventPlanner = new EventPlanner();
+        Venue nonExistentVenue = new Venue(3, "Phantom Venue", "Nowhere", 0);
+        Event event = new Event(1, "Test Event", "Event Description", null);
+
+        // This should throw an exception since the venue does not exist in the event planner's venue list
+        eventPlanner.assignVenueToEvent(nonExistentVenue, event);
+    }
 }

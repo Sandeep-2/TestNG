@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EventPlanner {
     private List<Event> events;
@@ -93,6 +94,22 @@ public class EventPlanner {
                 isOverlapping = true;
         }
         return isOverlapping;
+    }
+
+    public void updateVenue(Venue updatedVenue,Venue venue) {
+        venues = venues.stream()
+                .map(ven -> ven.getId() == venue.getId() ? updatedVenue : venue)
+                .collect(Collectors.toList());
+    }
+
+    public void removeVenue(Venue updatedVenue) {
+        venues = venues.stream()
+                .filter(venue -> venue != updatedVenue)
+                .collect(Collectors.toList());
+    }
+
+    public void assignVenueToEvent(Venue nonExistentVenue, Event event) {
+        event.setVenue(nonExistentVenue);
     }
 }
 
