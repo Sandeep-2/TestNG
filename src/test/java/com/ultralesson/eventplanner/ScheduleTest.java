@@ -80,4 +80,23 @@ public class ScheduleTest {
 
         eventPlanner.scheduleEvent(event, venue, startTime, endTime);
     }
+
+    @Test
+    public void testCreateScheduleWithFutureDates() {
+        // Given
+        Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
+        Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
+        LocalDateTime startTime = LocalDateTime.now().plusDays(1);
+        LocalDateTime endTime = startTime.plusHours(2);
+
+        // When
+        eventPlanner.scheduleEvent(event, venue, startTime, endTime);
+        Schedule scheduled = eventPlanner.getSchedules().get(0);
+
+        // Then
+        Assert.assertNotNull(scheduled, "Schedule should not be null");
+        Assert.assertEquals(scheduled.getEvent(), event, "Scheduled event should match with the provided event");
+        Assert.assertNotNull(scheduled.getStartTime(), "Start time should not be null");
+        Assert.assertTrue(scheduled.getStartTime().isAfter(LocalDateTime.now()), "Schedule should start in the future");
+    }
 }
