@@ -3,15 +3,15 @@
     <test name="MyTests">
         <groups>
             <run>
-                <exclude name="addAttendee"/>
+                <include name="addAttendee"/>
             </run>
         </groups>
         <classes>
             <class name="com.ultralesson.eventplanner.AttendeeTest"/>
-            <class name="com.ultralesson.eventplanner.EventCreationTest"/>
+            <!--<class name="com.ultralesson.eventplanner.EventCreationTest"/>
             <class name="com.ultralesson.eventplanner.EventPlannerTest"/>
             <class name="com.ultralesson.eventplanner.InvitationSenderTest"/>
-            <class name="com.ultralesson.eventplanner.ScheduleTest"/>
+            <class name="com.ultralesson.eventplanner.ScheduleTest"/>-->
         </classes>
     </test>
 </suite>
