@@ -111,5 +111,16 @@ public class EventPlanner {
     public void assignVenueToEvent(Venue nonExistentVenue, Event event) {
         event.setVenue(nonExistentVenue);
     }
+    public boolean createEvent(Event event) {
+        if (event.getName() == null || event.getName().isEmpty()) {
+            throw new IllegalArgumentException("Event name cannot be null or empty");
+        }
+        if (event.getDescription() == null || event.getDescription().isEmpty()) {
+            throw new IllegalArgumentException("Event description cannot be null or empty");
+        }
+        // Add other validation checks if necessary
+        addEvent(event);
+        return true;
+    }
 }
 
