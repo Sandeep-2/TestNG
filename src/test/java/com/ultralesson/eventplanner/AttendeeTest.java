@@ -24,14 +24,14 @@ public class AttendeeTest {
         Attendee invalidAttendee = new Attendee(5, "Ishan Kumar", "example.com");
     }
 
-    @Test
+    @Test(groups = {"validateAttendee"})
     public void testAttendeeProperties() {
         assertEquals(attendee.getId(), 1, "Attendee ID does not match");
         assertEquals(attendee.getName(), "John Doe", "Attendee name does not match");
         assertEquals(attendee.getEmail(), "john.doe@example.com", "Attendee email does not match");
     }
 
-    @Test
+    @Test(groups = {"addAttendee"})
     public void testAddAttendeeToEvent() {
         EventPlanner eventPlanner = new EventPlanner();
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
@@ -62,7 +62,7 @@ public class AttendeeTest {
         fakeEvent.addAttendee(attendee);
     }
 
-    @Test
+    @Test(groups = {"removeAttendee"})
     public void testRemoveAttendeeFromEvent() {
         EventPlanner eventPlanner = new EventPlanner();
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
