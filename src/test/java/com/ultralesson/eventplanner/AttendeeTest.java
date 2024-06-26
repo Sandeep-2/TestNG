@@ -19,8 +19,8 @@ public class AttendeeTest {
         attendee = new Attendee(1, "John Doe", "john.doe@example.com");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void shouldThrowExceptionForInvalidEmail(){
+    @Test(expectedExceptions = IllegalArgumentException.class, groups = {"validation"})
+    public void shouldThrowExceptionForInvalidEmail() {
         Attendee invalidAttendee = new Attendee(5, "Ishan Kumar", "example.com");
     }
 
@@ -47,12 +47,12 @@ public class AttendeeTest {
         Assert.assertEquals(newAttendee.getName(), "Alice Brown", "Attendee's name should be 'Alice Brown'");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class, groups = {"validation"})
     public void testAddInvalidAttendeeToEvent() {
         Attendee invalidAttendee = new Attendee(4, "", "");
     }
 
-    @Test(expectedExceptions = Exception.class)
+    @Test(expectedExceptions = Exception.class, groups = {"addAttendee"})
     public void testAddAttendeeToNonExistentEvent() {
         EventPlanner eventPlanner = new EventPlanner();
         Venue venue = new Venue(1, "Conference Center", null, 500);
@@ -76,7 +76,7 @@ public class AttendeeTest {
         Assert.assertFalse(event.getAttendees().contains(attendee), "Attendee should have been removed from the event");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class, groups = {"validation"})
     public void shouldNotAllowAddingAttendeeWithNullName() {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(2, "Tech Conference", "A comprehensive tech event", venue);
@@ -84,7 +84,7 @@ public class AttendeeTest {
         event.addAttendee(attendee);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class, groups = {"validation"})
     public void shouldNotAllowAddingAttendeeToNonexistentEvent() {
         EventPlanner eventPlanner = new EventPlanner();
         Event nonExistentEvent = new Event(99, "Ghost Event", "This is a phantom event", new Venue(10, null, "Nowhere", 0));

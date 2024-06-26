@@ -22,18 +22,18 @@ public class InvitationSenderTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         invitationSender = new InvitationSender();
         System.setOut(new PrintStream(outContent));
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         System.setOut(originalOut);
     }
 
-    @Test
+    @Test(groups = {"invitationSending"})
     public void testSendInvitationsSuccessfully() {
         Event event = createTestEvent();
         invitationSender.sendInvitations(event);
@@ -43,13 +43,13 @@ public class InvitationSenderTest {
         Assert.assertTrue(consoleOutput.contains("Sending invitation to jane.smith@example.com"), "Console output should contain invitation to Jane Smith");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"invitationSending"}, expectedExceptions = IllegalArgumentException.class)
     public void testSendInvitationsNoAttendees() {
         Event event = createTestEventWithoutAttendees();
         invitationSender.sendInvitations(event);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"invitationSending"}, expectedExceptions = IllegalArgumentException.class)
     public void testSendInvitationsNonExistentEvent() {
         invitationSender.sendInvitations(null);
     }

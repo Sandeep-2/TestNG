@@ -14,12 +14,12 @@ public class EventPlannerTest {
 
     private EventPlanner eventPlanner;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
         eventPlanner = new EventPlanner();
     }
 
-    @Test
+    @Test(groups = {"eventCreation"})
     public void testCreateEventWithValidDetails() {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
@@ -32,7 +32,7 @@ public class EventPlannerTest {
         assertEquals(retrievedEvent.getVenue(), venue, "Event venue should match");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"eventCreation"}, expectedExceptions = IllegalArgumentException.class)
     public void testCreateEventWithoutDescription() {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(2, "Tech Conference", null, venue);
@@ -40,14 +40,14 @@ public class EventPlannerTest {
         eventPlanner.addEvent(event);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"eventCreation"}, expectedExceptions = IllegalArgumentException.class)
     public void testCreateEventWithoutVenue() {
         Event event = new Event(3, "Tech Conference", "A conference about technology", null);
 
         eventPlanner.addEvent(event);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"eventCreation"}, expectedExceptions = IllegalArgumentException.class)
     public void testCreateEventWithoutName() {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(4, "", "A conference about technology", venue);
@@ -57,7 +57,7 @@ public class EventPlannerTest {
         Assert.assertFalse(eventPlanner.getEvents().contains(event), "Event should not be created without a name");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"venueManagement"}, expectedExceptions = IllegalArgumentException.class)
     public void testCreateVenueWithoutAddress() {
         Venue venue = new Venue(1, "Conference Center", null, 500);
         Event event = new Event(2, "Tech Conference", "A conference about technology", venue);
@@ -65,7 +65,7 @@ public class EventPlannerTest {
         eventPlanner.addEvent(event);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"venueManagement"}, expectedExceptions = IllegalArgumentException.class)
     public void testCreateVenueWithoutName() {
         Venue venue = new Venue(1, null, "New York Central", 500);
         Event event = new Event(2, "Tech Conference", "A conference about technology", venue);
@@ -73,7 +73,7 @@ public class EventPlannerTest {
         eventPlanner.addEvent(event);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"venueManagement"},expectedExceptions = IllegalArgumentException.class)
     public void testAssignVenueToEvent() {
         // Arrange
         EventPlanner eventPlanner = new EventPlanner();
@@ -89,7 +89,7 @@ public class EventPlannerTest {
         assertEquals(retrievedEvent.getVenue(), venue, "Assigned venue should match the event’s venue");
     }
 
-    @Test
+    @Test(groups = {"venueManagement"})
     public void testAddUpdateRemoveVenue() {
         // Arrange
         EventPlanner eventPlanner = new EventPlanner();
@@ -119,7 +119,7 @@ public class EventPlannerTest {
         Assert.assertFalse(eventPlanner.getVenues().contains(updatedVenue), "Venue should be removed from the list");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"venueManagement"}, expectedExceptions = IllegalArgumentException.class)
     public void testAssignNonExistentVenueToEvent() {
         EventPlanner eventPlanner = new EventPlanner();
         Venue nonExistentVenue = new Venue(3, "Phantom Venue", "Nowhere", 0);
