@@ -9,6 +9,10 @@
                 <include name="sendInvitations"/>
                 <include name="scheduleEvent"/>
             </run>
+            <dependencies>
+                <group name="event-creation" depends-on="initial-setup" />
+                <group name="attendee-management" depends-on="event-creation" />
+            </dependencies>
         </groups>
         <classes>
             <class name="com.ultralesson.eventplanner.AttendeeTest"/>
