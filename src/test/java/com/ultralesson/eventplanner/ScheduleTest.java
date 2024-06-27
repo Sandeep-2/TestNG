@@ -17,12 +17,20 @@ public class ScheduleTest {
 
     private EventPlanner eventPlanner;
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeMethod
     public void setUp() {
         eventPlanner = new EventPlanner();
     }
 
-    @Test(groups = {"schedule"})
+    @Test
+    public void createTestEvent() {
+        Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
+        Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
+        eventPlanner.addEvent(event);
+        Assert.assertNotNull(event, "Event should be created");
+    }
+
+    @Test(dependsOnMethods = "createTestEvent")
     public void testCreateScheduleWithValidDetails() {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
@@ -43,7 +51,7 @@ public class ScheduleTest {
         assertEquals(createdSchedule.getEndTime().toLocalDate(), endTime.toLocalDate(), "End date should match the input end date");
     }
 
-    @Test(groups = {"schedule"}, expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Start date cannot be past dated")
+    @Test(dependsOnMethods = "createTestEvent", expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Start date cannot be past dated")
     public void testCreateScheduleWithPastDates() {
         Venue venue = new Venue(2, "Hotel Ballroom", "Washington DC", 200);
         Event event = new Event(2, "Wedding Reception", "A lovely wedding reception", venue);
@@ -53,7 +61,7 @@ public class ScheduleTest {
         eventPlanner.scheduleEvent(event, venue, startTime, endTime);
     }
 
-    @Test(groups = {"schedule"}, expectedExceptions = IllegalArgumentException.class)
+    @Test(dependsOnMethods = "createTestEvent", expectedExceptions = IllegalArgumentException.class)
     public void testScheduleEventWithOverlappingTimesThrowsException() {
         LocalDateTime startTime1 = LocalDateTime.now().plusDays(1);
         LocalDateTime endTime1 = startTime1.plusHours(3);
@@ -70,8 +78,8 @@ public class ScheduleTest {
         eventPlanner.scheduleEvent(event1, venue1, startTime2, endTime2);
     }
 
-    @Test(groups = {"schedule"}, expectedExceptions = IllegalArgumentException.class)
-    public void testScheduleEventWithoutEvent() {
+    @Test(dependsOnMethods = "createTestEvent", expectedExceptions = IllegalArgumentException.class)
+    public void testScheduleEventWithoutEvent(){
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, null, "A conference about technology", venue);
         eventPlanner.addEvent(event);
@@ -81,19 +89,26 @@ public class ScheduleTest {
         eventPlanner.scheduleEvent(event, venue, startTime, endTime);
     }
 
-    @Test(groups = {"schedule"})
+    @Test(dependsOnMethods = "createTestEvent")
     public void testCreateScheduleWithFutureDates() {
+        // Given
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
         LocalDateTime endTime = startTime.plusHours(2);
 
+        // When
         eventPlanner.scheduleEvent(event, venue, startTime, endTime);
         Schedule scheduled = eventPlanner.getSchedules().get(0);
 
+        // Then
         Assert.assertNotNull(scheduled, "Schedule should not be null");
         Assert.assertEquals(scheduled.getEvent(), event, "Scheduled event should match with the provided event");
         Assert.assertNotNull(scheduled.getStartTime(), "Start time should not be null");
-        Assert.assertTrue(scheduled.getStartTime().isAfter(LocalDateTime.now()), "Schedule should start in the future");
+        Assert.assertNotNull(scheduled.getEndTime(), "End time should not be null");
+        Assert.assertEquals(scheduled.getStartTime(), startTime, "Scheduled start time should match with the provided start time");
+        Assert.assertEquals(scheduled.getEndTime(), endTime, "Scheduled end time should match with the provided end time");
+        Assert.assertEquals(scheduled.getStartTime().toLocalDate(), startTime.toLocalDate(), "Scheduled start date should match with the provided start date");
+        Assert.assertEquals(scheduled.getEndTime().toLocalDate(), endTime.toLocalDate(), "Scheduled end date should match with the provided end date");
     }
 }

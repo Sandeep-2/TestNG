@@ -22,18 +22,24 @@ public class InvitationSenderTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeMethod
     public void setUp() {
         invitationSender = new InvitationSender();
         System.setOut(new PrintStream(outContent));
     }
 
-    @AfterMethod(alwaysRun = true)
+    @AfterMethod
     public void tearDown() {
         System.setOut(originalOut);
     }
 
-    @Test(groups = {"invitationSending"})
+    @Test(groups = "event-creation")
+    public void createTestEventWithAttendees() {
+        Event event = createTestEvent();
+        Assert.assertNotNull(event, "Event should be created with attendees");
+    }
+
+    @Test(dependsOnGroups = "event-creation")
     public void testSendInvitationsSuccessfully() {
         Event event = createTestEvent();
         invitationSender.sendInvitations(event);
@@ -43,13 +49,13 @@ public class InvitationSenderTest {
         Assert.assertTrue(consoleOutput.contains("Sending invitation to jane.smith@example.com"), "Console output should contain invitation to Jane Smith");
     }
 
-    @Test(groups = {"invitationSending"}, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = "invalid-cases", expectedExceptions = IllegalArgumentException.class)
     public void testSendInvitationsNoAttendees() {
         Event event = createTestEventWithoutAttendees();
         invitationSender.sendInvitations(event);
     }
 
-    @Test(groups = {"invitationSending"}, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = "invalid-cases", expectedExceptions = IllegalArgumentException.class)
     public void testSendInvitationsNonExistentEvent() {
         invitationSender.sendInvitations(null);
     }
