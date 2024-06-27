@@ -13,6 +13,7 @@ import static org.testng.Assert.assertEquals;
 public class AttendeeTest {
 
     Attendee attendee;
+    EventPlanner eventPlanner;
 
     @BeforeMethod
     public void setUp() {
@@ -31,9 +32,9 @@ public class AttendeeTest {
         assertEquals(attendee.getEmail(), "john.doe@example.com", "Attendee email does not match");
     }
 
-    @Test(groups = {"addAttendee"})
+    @Test(dependsOnMethods = {"createTestEvent"})
     public void testAddAttendeeToEvent() {
-        EventPlanner eventPlanner = new EventPlanner();
+        eventPlanner = new EventPlanner();
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
         eventPlanner.addEvent(event);
@@ -91,5 +92,13 @@ public class AttendeeTest {
         Attendee attendee = new Attendee(4, "Alice Wonder", "alice.wonder@example.com");
         // This method should ideally check if the event exists in the event planner before adding an attendee.
         nonExistentEvent.addAttendee(attendee);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void createTestEvent() {
+        Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
+        Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
+        eventPlanner.addEvent(event);
+        Assert.assertNotNull(event, "Event should be created");
     }
 }
