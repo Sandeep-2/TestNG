@@ -19,7 +19,7 @@ public class EventPlannerTest {
         eventPlanner = new EventPlanner();
     }
 
-    @Test(groups = {"eventCreation"})
+    @Test(dependsOnGroups = "eventCreation")
     public void testCreateEventWithValidDetails() {
         Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
         Event event = new Event(1, "Tech Conference", "A conference about technology", venue);

@@ -1,11 +1,13 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="MySuite">
-    <test name="MyTests">
+<suite name="EventPlannerSuite">
+    <test name="EventPlannerTests">
         <groups>
             <run>
+                <include name="createEvent"/>
                 <include name="addAttendee"/>
-                <include name="removeAttendee" />
-                <include name="validateAttendee" />
+                <include name="removeAttendee"/>
+                <include name="sendInvitations"/>
+                <include name="scheduleEvent"/>
             </run>
         </groups>
         <classes>
