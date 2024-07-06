@@ -17,4 +17,7 @@ dependencies {
 test {
     useTestNG()
     include '**/*Test.class'
+    tasks.withType(Test) {
+        maxParallelForks 3 // Adjust as needed
+    }
 }
