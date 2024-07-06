@@ -20,7 +20,7 @@ public class AttendeeTest {
         attendee = new Attendee(1, "John Doe", "john.doe@example.com");
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class, groups = {"validation"})
+    @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "Invalid email format", groups = {"validation"})
     public void shouldThrowExceptionForInvalidEmail() {
         Attendee invalidAttendee = new Attendee(5, "Ishan Kumar", "example.com");
     }
