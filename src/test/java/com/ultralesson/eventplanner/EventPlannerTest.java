@@ -5,6 +5,8 @@ import com.ultralesson.eventplanner.model.Venue;
 import com.ultralesson.eventplanner.service.EventPlanner;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -15,8 +17,9 @@ public class EventPlannerTest {
     private EventPlanner eventPlanner;
 
     @BeforeMethod(alwaysRun = true)
-    public void setUp() {
-        eventPlanner = new EventPlanner();
+    @Parameters({"eventPlanner"}) // Inject the EventPlanner dependency
+    public void setUp(@Optional EventPlanner eventPlanner) {
+        this.eventPlanner = eventPlanner != null ? eventPlanner : new EventPlanner();
     }
 
     @Test(dependsOnGroups = "eventCreation")
