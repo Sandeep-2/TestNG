@@ -60,4 +60,22 @@ public class EventCreationTest {
                 new EventManagementTest(eventPlanner, event, venue)
         };
     }
+
+    @DataProvider(name = "eventDataProvider1")
+    public Object[][] createEventData() {
+        EventPlanner eventPlanner = new EventPlanner();
+        Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
+        Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
+
+        return new Object[][]{
+                {eventPlanner, event, venue}
+        };
+    }
+
+    @Factory(dataProvider = "eventDataProvider1")
+    public Object[] createInstances(EventPlanner eventPlanner, Event event, Venue venue) {
+        return new Object[]{
+                new EventManagementTest(eventPlanner, event, venue)
+        };
+    }
 }
