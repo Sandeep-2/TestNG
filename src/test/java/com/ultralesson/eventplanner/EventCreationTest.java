@@ -6,6 +6,7 @@ import com.ultralesson.eventplanner.service.EventPlanner;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 public class EventCreationTest {
@@ -38,5 +39,16 @@ public class EventCreationTest {
         } catch (IllegalArgumentException e) {
             Assert.assertFalse(expectedSuccess, "Expected failure but event creation succeeded.");
         }
+    }
+
+    @Factory
+    public Object[] createInstances() {
+        return new Object[]{
+                new Event(01,"Event 1", "Description 1",new Venue(3, "Phantom Venue1", "Nowhere", 0)),
+                new Event(02,"Event 2", "Description 2",new Venue(1, "Phantom Venue2", "Nowhere", 0)),
+                new Event(03,"Event 3", "Description 3",new Venue(2, "Phantom Venue3", "Nowhere", 0)),
+                new Event(04,"Event 4", "Description 4",new Venue(60, "Phantom Venue4", "Nowhere", 0)),
+                new Event(05,"Event 5", "Description 5",new Venue(8, "Phantom Venue5", "Nowhere", 0)),
+        };
     }
 }
