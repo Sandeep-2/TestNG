@@ -62,6 +62,15 @@ public class Event {
     public void addAttendees(List<Attendee> newAttendees) {
         attendees.addAll(newAttendees);
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public void setName(String eventName) {
+        this.name = eventName;
+    }
 }
 
 

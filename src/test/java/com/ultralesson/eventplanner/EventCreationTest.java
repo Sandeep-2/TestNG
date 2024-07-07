@@ -49,4 +49,15 @@ public class EventCreationTest {
         }
         return result;
     }
+
+    @Factory
+    public Object[] createInstances1() {
+        EventPlanner eventPlanner = new EventPlanner();
+        Venue venue = new Venue(1, "Conference Center", "New York Central", 500);
+        Event event = new Event(1, "Tech Conference", "A conference about technology", venue);
+
+        return new Object[]{
+                new EventManagementTest(eventPlanner, event, venue)
+        };
+    }
 }
