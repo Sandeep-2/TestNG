@@ -1,5 +1,8 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="EventPlannerSuite" parallel="methods" thread-count="4">
+    <listeners>
+        <listener class-name="com.ultralesson.eventplanner.CustomTestNGListener" />
+    </listeners>
     <test name="EventPlannerTests">
         <groups>
             <run>
