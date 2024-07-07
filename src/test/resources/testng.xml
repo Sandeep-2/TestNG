@@ -23,6 +23,7 @@
             <class name="com.ultralesson.eventplanner.EventPlannerTest"/>
             <class name="com.ultralesson.eventplanner.InvitationSenderTest"/>
             <class name="com.ultralesson.eventplanner.ScheduleTest"/>
+            <class name="com.ultralesson.eventplanner.EventManagementTest"/>
         </classes>
     </test>
 </suite>
